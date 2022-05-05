@@ -2,10 +2,11 @@ import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import Stats from 'three/examples/jsm/libs/stats.module'
-import * as dat from 'dat.gui'
+import { GUI } from 'dat.gui'
+
 
 const scene = new THREE.Scene() // SCENE
-const gui = new dat.GUI() // GUI
+const gui = new GUI() // GUI
 scene.add(new THREE.AxesHelper(5)) // AXES HELPER
 const stats = Stats() // STATS
 document.body.appendChild(stats.dom)
@@ -56,29 +57,16 @@ const clock = new THREE.Clock()
 let previousTime = 0
 
 // RENDER
-function render() { renderer.render(scene, camera) }
+function render() { renderer.render(scene, sceneCamera) }
 
 // ANIMATE
 function animate() {
 	requestAnimationFrame(animate)
-	// controls.update()
 	render()
 	stats.update()
-	// camera.updateProjectionMatrix()
-	// console.log(camera.position.z)
-
 	const elapsedTime = clock.getElapsedTime()
   const deltaTime = elapsedTime - previousTime
-	// console.log(deltaTime)
-	// mixer.update(deltaTime / 1000)
-	// if(mixer !== null){
-	// }
-
-	//Don't forget to render with the blender camera
-	if(model !== null){
-		// renderer.render(scene, sceneCamera)
-		// sceneCamera.updateProjectionMatrix()
-	}
+	mixer.update(deltaTime / 1000)
 }
 animate()
 
