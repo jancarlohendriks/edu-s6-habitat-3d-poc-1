@@ -18,36 +18,34 @@ const renderer = new THREE.WebGLRenderer()
 renderer.setSize(window.innerWidth, window.innerHeight)
 document.body.appendChild(renderer.domElement)
 
-// CAMERA
+// // CAMERA
 // camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1,1000)
 // camera.position.z = 2
 
-// CONTROLS
+// // CONTROLS
 // const controls = new OrbitControls(camera, renderer.domElement)
 // controls.enableDamping = true
 
 const loader = new GLTFLoader()
 loader.load(
-	'models/model-10.glb',
+	'models/model-11.glb',
 	function (gltf) {
-		const plane = gltf.scene.children.find(x => x.name == "Plane002")
+		const plane = gltf.scene.children.find(x => x.name == "Cube")
 		const path = gltf.scene.children.find(x => x.name == "NurbsPath")
+		console.log(gltf)
 		
 		camera = gltf.cameras[0]
-		camera.setFocalLength(2)
+		// camera.rotation.x = 30 * Math.PI / 180
+		// camera.updateMatrix()
+		// camera.setFocalLength(2)
 
 		const pointLight = new THREE.PointLight()
 		pointLight.position.set(2.5, 7.5, 15)
 
 		const ambientLight = new THREE.AmbientLight()
 		ambientLight.position.set(2.5, 7.5, 15)
-
-		// const boxGeometry = new THREE.BoxGeometry( 1, 1, 1 );
-		// const boxMaterial = new THREE.MeshBasicMaterial( {color: 0x00ff00} );
-		// const box = new THREE.Mesh( boxGeometry, boxMaterial );
-		// scene.add(box);
 		
-		const clip = THREE.AnimationClip.findByName( gltf.animations, 'Action.001' )
+		const clip = THREE.AnimationClip.findByName( gltf.animations, 'Action' )
 		mixer = new THREE.AnimationMixer(camera)
 		action = mixer.clipAction(clip)
 		action.play()
