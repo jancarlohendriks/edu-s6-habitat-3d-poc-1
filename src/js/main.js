@@ -1,11 +1,10 @@
 import * as THREE from 'three'
-// import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import Stats from 'three/examples/jsm/libs/stats.module'
 
 var camera, mixer, action
-
-let animationScroll = 0;
+var animationScroll = 0;
 
 const gridHelper = new THREE.GridHelper(10, 10);
 const stats = Stats()
@@ -19,29 +18,41 @@ const renderer = new THREE.WebGLRenderer()
 renderer.setSize(window.innerWidth, window.innerHeight)
 document.body.appendChild(renderer.domElement)
 
+// CAMERA
+// camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1,1000)
+// camera.position.z = 2
+
+// CONTROLS
+// const controls = new OrbitControls(camera, renderer.domElement)
+// controls.enableDamping = true
+
 const loader = new GLTFLoader()
 loader.load(
-	'models/model-7.glb',
+	'models/model-10.glb',
 	function (gltf) {
 		const plane = gltf.scene.children.find(x => x.name == "Plane002")
+		const path = gltf.scene.children.find(x => x.name == "NurbsPath")
 		
 		camera = gltf.cameras[0]
-		camera.setFocalLength(3)
+		camera.setFocalLength(2)
 
 		const pointLight = new THREE.PointLight()
 		pointLight.position.set(2.5, 7.5, 15)
-		scene.add(pointLight)
 
 		const ambientLight = new THREE.AmbientLight()
 		ambientLight.position.set(2.5, 7.5, 15)
+
+		// const boxGeometry = new THREE.BoxGeometry( 1, 1, 1 );
+		// const boxMaterial = new THREE.MeshBasicMaterial( {color: 0x00ff00} );
+		// const box = new THREE.Mesh( boxGeometry, boxMaterial );
+		// scene.add(box);
 		
-		const clip = THREE.AnimationClip.findByName( gltf.animations, 'Action' )
-		mixer = new THREE.AnimationMixer(camera)		
+		const clip = THREE.AnimationClip.findByName( gltf.animations, 'Action.001' )
+		mixer = new THREE.AnimationMixer(camera)
 		action = mixer.clipAction(clip)
 		action.play()
-		// gui.add(camera.position, 'z', 0, 10)
 
-		scene.add(gltf.scene, ambientLight)
+		scene.add(gltf.scene, ambientLight, pointLight)
 		renderer.render(scene, camera)
 	},
 	(xhr) => console.log((xhr.loaded / xhr.total) * 100 + '% loaded'),
@@ -50,14 +61,9 @@ loader.load(
 
 function animate() {
 	requestAnimationFrame(animate)
-	console.log(animationScroll)
-	// const controls = new OrbitControls(camera, renderer.domElement)
 	if (mixer) {
 		// mixer.update(clock.getDelta())
 		mixer.setTime(animationScroll)
-		// mixer.update(i)
-		// console.log(camera.rotation.y)
-		// camera.rotation.set(90,90,0)
 	}
 	if (camera) renderer.render(scene, camera)
 	stats.update()
