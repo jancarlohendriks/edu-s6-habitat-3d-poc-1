@@ -1,5 +1,5 @@
 import * as THREE from 'three'
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
+// import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import Stats from 'three/examples/jsm/libs/stats.module'
 
@@ -28,15 +28,14 @@ document.body.appendChild(renderer.domElement)
 
 const loader = new GLTFLoader()
 loader.load(
-	'models/model-11.glb',
+	'models/model-12.glb',
 	function (gltf) {
 		const plane = gltf.scene.children.find(x => x.name == "Cube")
 		const path = gltf.scene.children.find(x => x.name == "NurbsPath")
-		console.log(gltf)
+
+		console.log(gltf.animations)
 		
 		camera = gltf.cameras[0]
-		// camera.rotation.x = 30 * Math.PI / 180
-		// camera.updateMatrix()
 		// camera.setFocalLength(2)
 
 		const pointLight = new THREE.PointLight()
