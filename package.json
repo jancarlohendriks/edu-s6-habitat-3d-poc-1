@@ -1,12 +1,16 @@
 {
+	"homepage": "http://jancarlohendriks.github.io/habitat-3d-poc-1",
   "name": "habitat-3d-poc-1",
   "version": "0.0.0",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "serve": "vite preview"
+    "serve": "vite preview",
+		"predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
   },
   "devDependencies": {
+    "gh-pages": "^4.0.0",
     "vite": "^2.3.0"
   },
   "dependencies": {
