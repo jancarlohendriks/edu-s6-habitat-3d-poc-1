@@ -2,6 +2,7 @@ import * as THREE from 'three'
 // import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import Stats from 'three/examples/jsm/libs/stats.module'
+import model from '../models/model-12.glb?url'
 
 var camera, mixer, action
 var animationScroll = 0;
@@ -28,7 +29,7 @@ document.body.appendChild(renderer.domElement)
 
 const loader = new GLTFLoader()
 loader.load(
-	'models/model-12.glb',
+	model,
 	function (gltf) {
 		const plane = gltf.scene.children.find(x => x.name == "Cube")
 		const path = gltf.scene.children.find(x => x.name == "NurbsPath")

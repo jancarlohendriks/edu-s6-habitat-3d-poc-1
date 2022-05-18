@@ -1,5 +1,5 @@
 {
-  "name": "three-demo",
+  "name": "habitat-3d-poc-1",
   "version": "0.0.0",
   "scripts": {
     "dev": "vite",
