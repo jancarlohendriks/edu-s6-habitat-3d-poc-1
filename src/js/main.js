@@ -2,7 +2,7 @@ import * as THREE from 'three'
 // import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import Stats from 'three/examples/jsm/libs/stats.module'
-import model from '../models/model-12.glb?url'
+import model from '@/models/model-12.glb?url'
 
 var camera, mixer, action
 var animationScroll = 0;
