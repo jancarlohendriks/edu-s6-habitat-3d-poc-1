@@ -83,3 +83,11 @@ You can scroll up or down in order to control the animation.
 
 #### [Three JS test](https://www.youtube.com/watch?v=n1ApTcDTFVk)
 [![Three JS test](https://img.youtube.com/vi/n1ApTcDTFVk/0.jpg)](https://www.youtube.com/watch?v=n1ApTcDTFVk "Three JS test")
+
+## Management and Control
+
+### Configuration, change and release management
+![Three Config](./readme-docs/three-config.jpg)
+
+### Build and test infrastructure
+![Pano Deploy](./readme-docs/three-deploy.jpg)
