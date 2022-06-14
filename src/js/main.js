@@ -2,22 +2,23 @@ import * as THREE from 'three'
 // import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import Stats from 'three/examples/jsm/libs/stats.module'
-import model from '@/models/model-12.glb?url'
+import model from '@/models/model-13.glb?url'
 
 var camera, mixer, action
 var animationScroll = 0;
 
-const gridHelper = new THREE.GridHelper(10, 10);
+// const gridHelper = new THREE.GridHelper(10, 10);
 const stats = Stats()
 document.body.appendChild(stats.dom)
 
 var scene = new THREE.Scene();
-scene.add(new THREE.AxesHelper(5)) // AXES HELPER
-scene.add( gridHelper );
+// scene.add(new THREE.AxesHelper(5)) // AXES HELPER
+// scene.add( gridHelper );
 
 const renderer = new THREE.WebGLRenderer()
 renderer.setSize(window.innerWidth, window.innerHeight)
 document.body.appendChild(renderer.domElement)
+const title = document.getElementById('title')
 
 // // CAMERA
 // camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1,1000)
@@ -27,6 +28,10 @@ document.body.appendChild(renderer.domElement)
 // const controls = new OrbitControls(camera, renderer.domElement)
 // controls.enableDamping = true
 
+const raycaster = new THREE.Raycaster()
+const sceneMeshes = []
+var intersectedObject;
+
 const loader = new GLTFLoader()
 loader.load(
 	model,
@@ -34,10 +39,13 @@ loader.load(
 		const plane = gltf.scene.children.find(x => x.name == "Cube")
 		const path = gltf.scene.children.find(x => x.name == "NurbsPath")
 
-		console.log(gltf.animations)
+		gltf.scene.traverse(function (child) {
+			if ((child).isMesh && child.name.startsWith('Cube')) {
+				sceneMeshes.push(child)
+			}
+	})
 		
 		camera = gltf.cameras[0]
-		// camera.setFocalLength(2)
 
 		const pointLight = new THREE.PointLight()
 		pointLight.position.set(2.5, 7.5, 15)
@@ -57,6 +65,22 @@ loader.load(
 	(error) => console.log(error)
 )
 
+renderer.domElement.addEventListener('mousemove', onMouseMove, false)
+function onMouseMove(event) {
+	const mouse = {
+			x: (event.clientX / renderer.domElement.clientWidth) * 2 - 1,
+			y: -(event.clientY / renderer.domElement.clientHeight) * 2 + 1,
+	}
+	
+	raycaster.setFromCamera(mouse, camera)
+	
+	const intersects = raycaster.intersectObjects(sceneMeshes, false)
+	if(intersects[0]?.object?.name) {
+		title.innerText = intersects[0]?.object?.name
+		intersects[0]?.object?.material.color.set( 0xffffff );
+	}
+}
+
 function animate() {
 	requestAnimationFrame(animate)
 	if (mixer) {
@@ -67,6 +91,16 @@ function animate() {
 	stats.update()
 }
 animate()
+
+// UPDATE ON RESIZE
+window.addEventListener('resize', onWindowResize, false)
+window.addEventListener('load', onWindowResize, false)
+function onWindowResize() {
+	camera.aspect = window.innerWidth / window.innerHeight
+	camera.updateProjectionMatrix()
+	renderer.setSize(window.innerWidth, window.innerHeight)
+	renderer.render(scene, camera)
+}
 
 window.addEventListener('wheel', onScroll, false)
 function onScroll(e) {
